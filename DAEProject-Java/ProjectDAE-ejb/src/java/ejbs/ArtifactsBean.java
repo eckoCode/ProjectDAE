@@ -71,7 +71,6 @@ public class ArtifactsBean {
     @GET
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("all")
     public List<ArtifactDTO> getAll() {
         try {
             List<Artifact> artifacts = em.createNamedQuery("getAllartifacts").getResultList();

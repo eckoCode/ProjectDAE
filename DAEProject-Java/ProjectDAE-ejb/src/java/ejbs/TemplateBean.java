@@ -30,7 +30,7 @@ import javax.ws.rs.core.MediaType;
  * @author rubenfilipe
  */
 @Stateless
-@Path("/template")
+@Path("template")
 public class TemplateBean {
     @PersistenceContext
     EntityManager em;
@@ -53,7 +53,6 @@ public class TemplateBean {
     }
 
     @POST
-    //@Path("/create")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(TemplateDTO templateDTO) throws EntityExistsException {
         try {
@@ -91,7 +90,6 @@ public class TemplateBean {
     @GET
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("all")
     public List<TemplateDTO> getAll() {
         try {
             List<Template> templates = em.createNamedQuery("getAllTemplates").getResultList();

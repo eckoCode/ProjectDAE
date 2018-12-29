@@ -11,7 +11,6 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.EntityExistsException;
 import java.util.LinkedList;
 import java.util.List;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -33,7 +32,7 @@ import javax.ws.rs.core.MediaType;
  * @ 
  */
 @Stateless
-@Path("/clients")
+@Path("clients")
 public class ClientBean {
 
     // Add business logic below. (Right-click in editor and choose
@@ -60,8 +59,6 @@ public class ClientBean {
     }
 
     @POST
-    @RolesAllowed({"Administrator"})
-    @Path("/create")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(ClientDTO client) throws EntityExistsException {
         try {
@@ -97,9 +94,7 @@ public class ClientBean {
     }
 
     @GET
-    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("all")
     public List<ClientDTO> getAll() {
         try {
             // o EntityManager é que sabe como pegar todos os students 
@@ -114,7 +109,6 @@ public class ClientBean {
     }
 
     @DELETE
-    @RolesAllowed({"Administrator"})
     @Path("{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("username") String username) {
@@ -132,7 +126,6 @@ public class ClientBean {
     }
 
     @PUT
-    @RolesAllowed({"Administrator"})
     @Path("/update")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateRest(ClientDTO client) throws EntityDoesNotExistsException {

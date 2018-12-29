@@ -93,7 +93,6 @@ public class ContractBean {
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("all")
     public List<ContractDTO> getAll() {
         try {
             // o EntityManager é que sabe como pegar todos os students 

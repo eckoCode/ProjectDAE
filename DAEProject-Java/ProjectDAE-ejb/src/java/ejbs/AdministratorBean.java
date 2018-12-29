@@ -27,7 +27,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Stateless
-@Path("administrators")
+@Path("admins")
 public class AdministratorBean {
     @PersistenceContext
     EntityManager em;
@@ -50,7 +50,6 @@ public class AdministratorBean {
     }
 
     @POST
-    @Path("/create")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(AdministratorDTO admin) throws EntityExistsException {
         try {
@@ -89,7 +88,6 @@ public class AdministratorBean {
     @GET
     @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("all")
     public List<AdministratorDTO> getAll() {
         try {
             // o EntityManager é que sabe como pegar todos os students 
@@ -135,16 +133,6 @@ public class AdministratorBean {
         return new AdministratorDTO(admin.getName(), admin.getEmail(), admin.getRole(), admin.getUsername(), admin.getPassword());
     }
 
-    /*
-    public void create (String username, String password, String name, String email) {
-        try {
-            Administrator admin = new Administrator(username, password, name, email);
-            em.persist(admin);             
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
-        }
-    }
-     */
     @PUT
     @Path("/update")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

@@ -49,7 +49,7 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: 'http://localhost:8080/DAEprojectJava/'
+    baseURL: 'http://localhost:8080/ProjectDAE-war/'
   },
 
   /*

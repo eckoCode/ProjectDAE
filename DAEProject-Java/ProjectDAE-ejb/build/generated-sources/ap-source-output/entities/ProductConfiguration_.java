@@ -10,7 +10,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-12-28T23:06:39")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2018-12-29T11:23:56")
 @StaticMetamodel(ProductConfiguration.class)
 public class ProductConfiguration_ extends Template_ {
 

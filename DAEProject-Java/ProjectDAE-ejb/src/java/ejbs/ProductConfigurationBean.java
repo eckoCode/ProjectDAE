@@ -95,7 +95,6 @@ public class ProductConfigurationBean {
     @GET
     //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("all")
     public List<ProductConfigurationDTO> getAll() {
         try {
             List<ProductConfiguration> productConfigurations = em.createNamedQuery("getAllproductConfigurations").getResultList();
