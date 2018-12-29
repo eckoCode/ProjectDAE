@@ -30,7 +30,7 @@ import javax.ws.rs.core.MediaType;
  * @author rubenfilipe
  */
 @Stateless
-@Path("template")
+@Path("templates")
 public class TemplateBean {
     @PersistenceContext
     EntityManager em;
@@ -88,7 +88,6 @@ public class TemplateBean {
     }
 
     @GET
-    //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<TemplateDTO> getAll() {
         try {
@@ -100,7 +99,6 @@ public class TemplateBean {
     }
 
     @DELETE
-    //@RolesAllowed({"Administrator"})
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("id") int id) {

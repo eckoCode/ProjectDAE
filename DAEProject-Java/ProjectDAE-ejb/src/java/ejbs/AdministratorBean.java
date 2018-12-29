@@ -11,7 +11,6 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.EntityExistsException;
 import java.util.LinkedList;
 import java.util.List;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -86,7 +85,6 @@ public class AdministratorBean {
     }
 
     @GET
-    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<AdministratorDTO> getAll() {
         try {
@@ -102,7 +100,6 @@ public class AdministratorBean {
     }
 
     @DELETE
-    @RolesAllowed({"Administrator"})
     @Path("{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("username") String username) {

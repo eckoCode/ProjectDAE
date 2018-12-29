@@ -97,7 +97,6 @@ public class SoftwareBean {
 
 
     @GET
-    //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<SoftwareDTO> getAll() {
         try {
@@ -109,7 +108,6 @@ public class SoftwareBean {
     }
 
     @DELETE
-    //@RolesAllowed({"Administrator"})
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("id") int id) {

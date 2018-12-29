@@ -69,7 +69,6 @@ public class ArtifactsBean {
 
 
     @GET
-    //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<ArtifactDTO> getAll() {
         try {

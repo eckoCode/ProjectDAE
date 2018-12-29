@@ -69,7 +69,6 @@ public class ModuleBean {
 
 
     @GET
-    //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<ModuleDTO> getAll() {
         try {

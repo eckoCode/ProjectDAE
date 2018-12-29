@@ -93,7 +93,6 @@ public class ProductConfigurationBean {
 
 
     @GET
-    //@RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<ProductConfigurationDTO> getAll() {
         try {
@@ -105,7 +104,6 @@ public class ProductConfigurationBean {
     }
 
     @DELETE
-    //@RolesAllowed({"Administrator"})
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("id") int id) {

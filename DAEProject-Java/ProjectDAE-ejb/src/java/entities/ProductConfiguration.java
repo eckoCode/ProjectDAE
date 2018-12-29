@@ -32,7 +32,7 @@ import javax.persistence.Table;
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("ProductConfiguration")
 @Table(name = "ProductConfiguration")
-@NamedQuery(name = "getAllProductConfigurations", query = "SELECT a FROM ProductConfiguration a")
+@NamedQuery(name = "getAllproductConfigurations", query = "SELECT a FROM ProductConfiguration a")
 public class ProductConfiguration extends Template {
        
     @ManyToOne(cascade = CascadeType.PERSIST)
