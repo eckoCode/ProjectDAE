@@ -14,10 +14,49 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+/**
+ *
+ * @author rubenfilipe
+ */
+@Entity
+@Table(name = "USERS_GROUPS")
+public class UserGroup implements Serializable {
 
+    public static enum GROUP {
+        Administrator, Client
+    }
 
-public enum UserGroup {
+    @Id
+    @Enumerated(EnumType.STRING)
+    private GROUP group_name;
 
-    Administrator, Client
+    @Id
+    @OneToOne
+    @JoinColumn(name = "USERNAME")
+    private User user;
+
+    public UserGroup() {
+    }
+
+    public UserGroup(GROUP groupName, User user) {
+        this.group_name = groupName;
+        this.user = user;
+    }
+
+    public GROUP getGroupName() {
+        return group_name;
+    }
+
+    public void setGroupName(GROUP groupName) {
+        this.group_name = groupName;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 }

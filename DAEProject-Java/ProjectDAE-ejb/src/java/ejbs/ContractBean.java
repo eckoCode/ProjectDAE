@@ -11,6 +11,7 @@ import exceptions.EntityExistsException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PreDestroy;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,14 +40,14 @@ public class ContractBean {
         em.close();
     }
      
-     public void create(int id, int idClient, int idAdmin, String contractInfo) throws EntityExistsException {
+     public void create(int id, String idClient, String contractInfo) throws EntityExistsException {
         try {
             Contract c = em.find(Contract.class, id);
             if (c != null) {
                 throw new EntityExistsException("ERROR: Can't create new contract because already exists a contract with this id: " + id);
             }
 
-            Contract contract = new Contract(id, contractInfo,idClient, idAdmin);
+            Contract contract = new Contract(contractInfo,idClient);
             em.persist(contract);
 
         } catch (EntityExistsException e) {
@@ -57,6 +58,7 @@ public class ContractBean {
     }
 
     @POST
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(ContractDTO contract) throws EntityExistsException {
         try {
@@ -65,7 +67,7 @@ public class ContractBean {
                 throw new EntityExistsException("ERROR: Can't create new contract because already exists a contract with this id: " + contract.getId());
             }
 
-            Contract contract1 = new Contract(contract.getId(),contract.getContractInfo(),contract.getIdClient(),contract.getIdAdmin());
+            Contract contract1 = new Contract(contract.getContractInfo(),contract.getIdClient());
             em.persist(contract1);
         } catch (EntityExistsException e) {
             throw e;
@@ -76,6 +78,7 @@ public class ContractBean {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public ContractDTO getContract(@PathParam("id") int id) throws EntityExistsException {
@@ -92,6 +95,7 @@ public class ContractBean {
     }
 
     @GET
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<ContractDTO> getAll() {
         try {
@@ -117,7 +121,7 @@ public class ContractBean {
     }
 
     public ContractDTO contractToDTO(Contract contract) {
-        return new ContractDTO(contract.getId(), contract.getIdClient(),contract.getIdAdmin(),contract.getContractInfo());
+        return new ContractDTO(contract.getId(), contract.getIdClient(),contract.getContractInfo());
     }
     
 }

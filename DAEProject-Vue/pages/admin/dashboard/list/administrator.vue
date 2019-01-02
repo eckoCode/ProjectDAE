@@ -1,4 +1,4 @@
-<template>
+q<template>
   <v-app>
     <v-card>
       <v-card-title>Administrators
@@ -8,7 +8,7 @@
       <v-data-table :headers="headers" :items="admins" :search="search">
         <template slot="items" slot-scope="props">
                           <td>{{ props.item.name }}</td>
-                          <td class="text-xs-left">{{ props.item.position }}</td>
+                          <td class="text-xs-left">{{ props.item.role }}</td>
                           <td class="text-xs-left">{{ props.item.email }}</td>
                           <td class="text-xs-left">{{ props.item.username }}</td>
                           <td class="justify-center layout px-0">
@@ -38,7 +38,7 @@
                   <v-text-field v-model="editedAdmin.name" label="Name"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedAdmin.position" label="Position"></v-text-field>
+                  <v-overflow-btn v-model="editedAdmin.role" :items="roles"></v-overflow-btn>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-text-field v-model="editedAdmin.email" label="Email"></v-text-field>
@@ -72,19 +72,16 @@
             value: "name"
           },
           {
-            text: "Position",
+            text: "Role",
             sortable: true,
-            value: "calories"
           },
           {
             text: "Email",
             sortable: true,
-            value: "fat"
           },
           {
             text: "Username",
             sortable: true,
-            value: "carbs"
           },
           {
             text: "Actions"
@@ -94,10 +91,17 @@
         dialog: false,
         editedAdmin: {
           name: '',
-          position: '',
+          role: '',
           email: '',
-          username: '',
-        }
+        },
+        roles:[
+                'Manager',
+                'Developer',
+                'Tester',
+                'Janitor',
+                'Front end Developer',
+                'Back end Developer'
+            ],
       };
     },
     created() {
@@ -105,7 +109,7 @@
     },
     methods: {
       fetchAdmins: function() {
-        this.$axios.get('api/admins')
+        this.$axios.get('api/admins', {auth:{username:this.$axios.defaults.auth.username, password:this.$axios.defaults.auth.password}})
           .then(response => {
             console.log(response.data);
             this.admins = response.data;

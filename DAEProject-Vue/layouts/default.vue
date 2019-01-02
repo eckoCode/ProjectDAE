@@ -3,7 +3,7 @@
     <v-toolbar app fixed clipped-left>
       <v-toolbar-items>
         <v-btn flat to="/admin/dashboard">DAE Project</v-btn>
-        <v-btn flat>Templates</v-btn>
+        <v-btn flat to="/templates">Templates</v-btn>
       </v-toolbar-items>
       <v-spacer></v-spacer>
       <v-toolbar-items v-if="user === false">

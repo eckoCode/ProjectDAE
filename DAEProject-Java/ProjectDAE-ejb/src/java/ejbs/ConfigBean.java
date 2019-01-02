@@ -46,8 +46,8 @@ public class ConfigBean {
     @PostConstruct
     public void populateDB() {
         try {
-            administratorBean.create("admin", "123", "Thiago Santos", "oiji@email.com", "Administrator Of Things");
-            administratorBean.create("admin1", "123", "Pedro G.", "nhb@email.com", "Administrator Of Things");
+            administratorBean.create("admin", "netbeansmerda", "Thiago Santos", "oiji@email.com", "Administrator Of Things");
+            administratorBean.create("admin1", "1234", "Pedro G.", "nhb@email.com", "Administrator Of Things");
             administratorBean.create("admin2", "123", "João Pedro", "ryeb@email.com", "Administrator Of Things");
             administratorBean.create("admin3", "123", "Arlindo", "fasb@email.com", "Administrator Of Things");
             administratorBean.create("admin4", "123", "Messi", "messi@email.com", "The Boss");
@@ -61,7 +61,7 @@ public class ConfigBean {
             administratorBean.create("admin12", "123", "Arturo Vidal", "vidal@email.com", "Administrator Of Things");
             administratorBean.create("admin13", "123", "Piqué", "shakira@email.com", "Administrator Of Things");
 
-            clientBean.create("client1",   "123", "Rua fgfg gdf", "Marvel", "Kara - 1293715");
+            clientBean.create("client1",   "netbeansmerda", "Rua fgfg gdf", "Marvel", "Kara - 1293715");
             clientBean.create("client2",  "123", "Rua qopwk", "Super Girl", "Dean - 758491453");
             clientBean.create("client3",  "123", "Rua wkeios", "MrPiracy", "Lena - 1237892");
             clientBean.create("client4",  "123", "Rua 20weke", "Amazon", "Harry - 8462781992");
@@ -79,8 +79,8 @@ public class ConfigBean {
             templateBean.create(2,"Software de finanças");
             
             //Criar os product configuration
-            configurationBean.create(1, "Software de gestão", new Client("Rua leiria", "Start","Ruben","Ruben","123456789"), "Cloud", StateOfSoftware.ACTIVE, "Free", new Contract(1, "ola", 1, 1));
-            configurationBean.create(2, "Software de finanças", new Client("Rua leiria", "Start","Tiago","Tiago","123456789"), "Cloud", StateOfSoftware.ACTIVE, "Free", new Contract(2, "ol3", 2, 2));
+            configurationBean.create(1, new Client("Rua leiria", "Start","Ruben","Ruben","123456789"), "Cloud", StateOfSoftware.ACTIVE, "Free", new Contract( "ola", "Ruben"));
+            configurationBean.create(2, new Client("Rua leiria", "Start","Tiago","Tiago","123456789"), "Cloud", StateOfSoftware.ACTIVE, "Free", new Contract( "ol3","Tiago"));
 
             artifactsBean.create(1, "downloads", "downloa", "jdh", "sbjknd");
             artifactsBean.create(2, "jad", "ds", "ssdafs", "sdfas");
@@ -92,10 +92,8 @@ public class ConfigBean {
 
             
             //Criar o contrat 10
-            contractBean.create(1,1,1,"Nada");
-            contractBean.create(2,2,2,"Nothing");
-            contractBean.create(3,3,3,"Porque");
-            contractBean.create(4,4,4,"Existe");
+            contractBean.create(1,"Ruben","Nada");
+            contractBean.create(2,"Tiago","Nothing");
 
             //Criar modulo
             moduleBean.create(1, "modulo 1");

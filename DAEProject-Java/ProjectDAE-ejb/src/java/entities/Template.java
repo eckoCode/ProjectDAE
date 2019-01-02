@@ -7,11 +7,14 @@ package entities;
 
 import java.io.Serializable;
 import java.util.LinkedList;
+import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -30,22 +33,20 @@ import javax.persistence.Table;
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name="Template")
-@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.INTEGER)
 @DiscriminatorValue("Template")
-@NamedQuery(name = "getAllTemplates", query = "SELECT t FROM Template t")
+@NamedQuery(name = "getAllTemplates", query = "SELECT t FROM Template as t")
 public class Template implements Serializable{
     @Id
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
      
-    @Column(nullable = false)
     private String description;
     
     private LinkedList<Software> software;
 
 
-    public Template(int id, String description) {
-        this.id = id;
+    public Template(String description) {
         this.description = description;
         this.software = new LinkedList<>();
     }
@@ -56,10 +57,6 @@ public class Template implements Serializable{
     
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getDescription() {

@@ -12,6 +12,7 @@ import exceptions.EntityExistsException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PreDestroy;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -61,6 +62,7 @@ public class SoftwareBean {
     }
 
     @POST
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(SoftwareDTO softwareDTO) throws EntityExistsException {
         try {
@@ -80,6 +82,7 @@ public class SoftwareBean {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public SoftwareDTO getSoftwareDTO(@PathParam("id") int id) throws EntityExistsException {
@@ -97,6 +100,7 @@ public class SoftwareBean {
 
 
     @GET
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<SoftwareDTO> getAll() {
         try {
@@ -109,6 +113,7 @@ public class SoftwareBean {
 
     @DELETE
     @Path("{id}")
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("id") int id) {
         try {
@@ -139,6 +144,7 @@ public class SoftwareBean {
     }
 
     @PUT
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateRest(SoftwareDTO softwareDTO) throws EntityDoesNotExistsException {
         try {

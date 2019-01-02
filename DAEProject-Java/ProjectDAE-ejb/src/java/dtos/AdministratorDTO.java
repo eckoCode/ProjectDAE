@@ -7,6 +7,7 @@ package dtos;
 
 import java.io.Serializable;
 
+
 public class AdministratorDTO extends UserDTO implements Serializable  {
     private String name;
     private String role;

@@ -11,6 +11,7 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.EntityExistsException;
 import java.util.LinkedList;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -26,8 +27,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Stateless
-@Path("admins")
+@Path("/admins")
 public class AdministratorBean {
+
     @PersistenceContext
     EntityManager em;
 
@@ -38,7 +40,7 @@ public class AdministratorBean {
                 throw new EntityExistsException("ERROR: Can't create new administrator because already exists a administrator with the username: " + username);
             }
 
-            Administrator administrator = new Administrator(name, role, email , username, password);
+            Administrator administrator = new Administrator(name, role, email, username, password);
             em.persist(administrator);
 
         } catch (EntityExistsException e) {
@@ -49,6 +51,7 @@ public class AdministratorBean {
     }
 
     @POST
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(AdministratorDTO admin) throws EntityExistsException {
         try {
@@ -68,6 +71,7 @@ public class AdministratorBean {
 
     @GET
     @Path("/{username}")
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public AdministratorDTO getAdministrator(@PathParam("username") String username) throws EntityExistsException {
@@ -85,13 +89,12 @@ public class AdministratorBean {
     }
 
     @GET
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<AdministratorDTO> getAll() {
+                System.out.println("consegui");
+
         try {
-            // o EntityManager é que sabe como pegar todos os students 
-            // este bean vai ao entitymanager que depois vai à BD buscar os dados 
-            // o entitymanager sabe que tem que ir à entity Student pois é essa a entidade que tem a NamedQuery getAllStudents 
-            // não pode haver duas entidades com NamedQuery iguais 
             List<Administrator> admins = em.createNamedQuery("getAllAdministrators").getResultList();
             return administratorsToDTOs(admins);
         } catch (Exception e) {
@@ -100,6 +103,7 @@ public class AdministratorBean {
     }
 
     @DELETE
+    @RolesAllowed({"Administrator"})
     @Path("{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("username") String username) {
@@ -117,11 +121,11 @@ public class AdministratorBean {
     }
 
     public List<AdministratorDTO> administratorsToDTOs(List<Administrator> admins) {
-        List<AdministratorDTO> administratorsDTO = new LinkedList<AdministratorDTO>();
+        List<AdministratorDTO> administratorsDTO = new LinkedList<>();
 
-        for (Administrator a : admins) {
+        admins.forEach((a) -> {
             administratorsDTO.add(administratorToDTO(a));
-        }
+        });
 
         return administratorsDTO;
     }
@@ -131,7 +135,7 @@ public class AdministratorBean {
     }
 
     @PUT
-    @Path("/update")
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateRest(AdministratorDTO admin) throws EntityDoesNotExistsException {
         try {

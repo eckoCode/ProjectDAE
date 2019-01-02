@@ -10,6 +10,7 @@ import entities.Modules;
 import exceptions.EntityExistsException;
 import java.util.LinkedList;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -49,6 +50,7 @@ public class ModuleBean {
     }
 
     @POST
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(ModuleDTO moduleDTO) throws EntityExistsException {
         try {
@@ -69,6 +71,7 @@ public class ModuleBean {
 
 
     @GET
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<ModuleDTO> getAll() {
         try {

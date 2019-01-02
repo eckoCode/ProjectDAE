@@ -2,7 +2,7 @@
     <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field v-model="companyName" :rules="companyNameRules" :counter="10" label="Company name" required></v-text-field>
         <v-text-field v-model="address" :rules="addressRules" :counter="10" label="Address" required></v-text-field>
-        <v-text-field v-model="contactPeople" :rules="contactPeoplelRules" label="Contact people" required></v-text-field>
+        <v-text-field v-model="contactPerson" :rules="contactPeoplelRules" label="Contact person" required></v-text-field>
         <v-text-field v-model="username" :rules="usernameRules" :counter="10" label="Username" required></v-text-field>
         <v-text-field v-model="password" :type="'password'" :rules="passwordRules" :counter="10" label="Password" required></v-text-field>
     
@@ -23,9 +23,9 @@
             addressRules: [
                 v => !!v || 'Address is required',
             ],
-            contactPeople: '',
+            contactPerson: '',
             contactPeoplelRules: [
-                v => !!v || 'Contact peoplel is required',
+                v => !!v || 'Contact person is required',
             ],
             password: '',
             passwordRules: [
@@ -36,23 +36,16 @@
             usernameRules: [
                 v => !!v || 'Username is required'
             ],
-
-            username:'',
-            password:'',
-            companyName:'',
-            contactPeople:'',
-            address:''
     
         }),
         methods: {
             submit() {
                 if (this.$refs.form.validate()) {
-                    // Native form submission is not yet supported
                     let client = {
                         username: this.username,
                         password: this.password,
                         companyName: this.companyName,
-                        contactPeople: this.contactPeople,
+                        contactPerson: this.contactPerson,
                         address: this.address,
                     };
     

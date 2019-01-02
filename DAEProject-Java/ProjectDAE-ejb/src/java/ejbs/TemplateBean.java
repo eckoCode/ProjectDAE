@@ -11,6 +11,7 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.EntityExistsException;
 import java.util.LinkedList;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,21 +30,23 @@ import javax.ws.rs.core.MediaType;
  *
  * @author rubenfilipe
  */
+
 @Stateless
 @Path("templates")
 public class TemplateBean {
     @PersistenceContext
     EntityManager em;
 
-    public void create(int id, String description) throws EntityExistsException {
+    public Template create(int id,String description) throws EntityExistsException {
         try {
             Template t = em.find(Template.class, id);
             if (t != null) {
                 throw new EntityExistsException("ERROR: Can't create new template because already exists a template with this id: " + id);
             }
 
-            Template template = new Template(id, description);
+            Template template = new Template(description);
             em.persist(template);
+            return template;
 
         } catch (EntityExistsException e) {
             throw e;
@@ -53,6 +56,7 @@ public class TemplateBean {
     }
 
     @POST
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(TemplateDTO templateDTO) throws EntityExistsException {
         try {
@@ -61,7 +65,7 @@ public class TemplateBean {
                 throw new EntityExistsException("ERROR: Can't create new template because already exists a template with this id: " + templateDTO.getId());
             }
 
-            Template template = new Template(templateDTO.getId(),templateDTO.getDescription());
+            Template template = new Template(templateDTO.getDescription());
             em.persist(template);
         } catch (EntityExistsException e) {
             throw e;
@@ -69,8 +73,28 @@ public class TemplateBean {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    @PUT
+    @RolesAllowed({"Administrator"})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void updateRest(TemplateDTO templateDTO) throws EntityDoesNotExistsException {
+        System.out.println("AQUI" + templateDTO);
+        try {
+            Template t = em.find(Template.class, templateDTO.getId());
+
+            if (t == null) {
+                throw new EntityDoesNotExistsException("ERROR: Can't update that template because doesn't exists a template with thid id: " + templateDTO.getId());
+            }
+
+           t.setDescription(templateDTO.getDescription());
+
+        } catch (EntityDoesNotExistsException e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
 
     @GET
+    @RolesAllowed({"Administrator"})
     @Path("/{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -88,6 +112,7 @@ public class TemplateBean {
     }
 
     @GET
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<TemplateDTO> getAll() {
         try {
@@ -99,6 +124,7 @@ public class TemplateBean {
     }
 
     @DELETE
+    @RolesAllowed({"Administrator"})
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("id") int id) {
@@ -110,17 +136,17 @@ public class TemplateBean {
             }
 
             em.remove(tempalte);
-        } catch (Exception ex) {
+        } catch (EntityDoesNotExistsException ex) {
             throw new EJBException(ex.getMessage());
         }
     }
 
     public List<TemplateDTO> templatesToDTOs(List<Template> templates) {
-        List<TemplateDTO> templatesDTO = new LinkedList<TemplateDTO>();
+        List<TemplateDTO> templatesDTO = new LinkedList<>();
 
-        for (Template t : templates) {
+        templates.forEach((t) -> {
             templatesDTO.add(templateToDTO(t));
-        }
+        });
 
         return templatesDTO;
     }
@@ -128,23 +154,4 @@ public class TemplateBean {
     public TemplateDTO templateToDTO(Template template) {
         return new TemplateDTO(template.getId(),template.getDescription());
     }
-
-    @PUT
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void updateRest(TemplateDTO templateDTO) throws EntityDoesNotExistsException {
-        try {
-            Template t = em.find(Template.class, templateDTO.getId());
-
-            if (t == null) {
-                throw new EntityDoesNotExistsException("ERROR: Can't update that template because doesn't exists a template with thid id: " + templateDTO.getId());
-            }
-
-           t.setId(templateDTO.getId());
-           t.setDescription(templateDTO.getDescription());
-
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
-        }
-    }
-    
 }

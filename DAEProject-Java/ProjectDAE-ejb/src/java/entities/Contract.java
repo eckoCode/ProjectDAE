@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.NamedQuery;
@@ -23,14 +25,12 @@ import javax.persistence.Table;
 @NamedQuery(name = "getAllContract", query = "SELECT c FROM Contract c")
 public class Contract implements Serializable{
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     private int id;
     
     @Column(nullable = false)
-    private int idClient;
-    
-    @Column(nullable = false)
-    private int idAdmin;
+    private String idClient;
     
     @Column(nullable = false)
     private String contractInfo;
@@ -39,35 +39,26 @@ public class Contract implements Serializable{
     public Contract() {
     }
 
-    public Contract(int id,String contractInfo, int idClient, int idAdmin) {
-        this.id = id;
+    public Contract(String contractInfo, String idClient) {
         this.contractInfo = contractInfo;
         this.idClient = idClient;
-        this.idAdmin = idAdmin;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getIdClient() {
+    public String getIdClient() {
         return idClient;
     }
 
-    public void setIdClient(int idClient) {
+    public void setIdClient(String idClient) {
         this.idClient = idClient;
     }
-
-    public int getIdAdmin() {
-        return idAdmin;
-    }
-
-    public void setIdAdmin(int idAdmin) {
-        this.idAdmin = idAdmin;
+    
+  
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getContractInfo() {

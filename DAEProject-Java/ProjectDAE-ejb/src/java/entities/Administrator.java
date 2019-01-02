@@ -5,7 +5,9 @@
  */
 package entities;
 
+import entities.UserGroup.GROUP;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
@@ -26,20 +28,22 @@ import javax.persistence.NamedQuery;
 public class Administrator extends User implements Serializable {
 
     private String name;
+    
     private String role;
+
     private String email;
-    private UserGroup userGroup;
+
 
     public Administrator() {
         super();
     }
 
     public Administrator(String name, String role, String email, String username, String password) {
-        super(username, password);
+        super(GROUP.Administrator,username, password);
         this.name = name;
         this.role = role;
         this.email = email;
-        this.userGroup = UserGroup.Administrator;
+
     }
 
     public String getName() {

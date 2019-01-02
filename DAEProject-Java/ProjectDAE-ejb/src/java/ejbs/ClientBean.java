@@ -11,6 +11,7 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.EntityExistsException;
 import java.util.LinkedList;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -27,10 +28,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-/**
- *
- * @ 
- */
 @Stateless
 @Path("clients")
 public class ClientBean {
@@ -59,6 +56,7 @@ public class ClientBean {
     }
 
     @POST
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(ClientDTO client) throws EntityExistsException {
         try {
@@ -77,7 +75,8 @@ public class ClientBean {
     }
     
     @GET
-    @Path("/{username}")
+    @Path("{username}")
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public ClientDTO getClient(@PathParam("username") String username)  {
@@ -94,13 +93,10 @@ public class ClientBean {
     }
 
     @GET
+    @RolesAllowed({"Administrator","Client"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<ClientDTO> getAll() {
         try {
-            // o EntityManager é que sabe como pegar todos os students 
-            // este bean vai ao entitymanager que depois vai à BD buscar os dados 
-            // o entitymanager sabe que tem que ir à entity Student pois é essa a entidade que tem a NamedQuery getAllStudents 
-            // não pode haver duas entidades com NamedQuery iguais 
             List<Client> clients = em.createNamedQuery("getAllClients").getResultList();
             return clientsToDTOs(clients);
         } catch (Exception e) {
@@ -110,6 +106,7 @@ public class ClientBean {
 
     @DELETE
     @Path("{username}")
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("username") String username) {
         try {
@@ -126,7 +123,7 @@ public class ClientBean {
     }
 
     @PUT
-    @Path("/update")
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateRest(ClientDTO client) throws EntityDoesNotExistsException {
         try {

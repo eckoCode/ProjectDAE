@@ -15,6 +15,7 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.EntityExistsException;
 import java.util.LinkedList;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,14 +40,14 @@ public class ProductConfigurationBean {
     @PersistenceContext
     EntityManager em;
 
-    public void create(int id, String description, Client client, String hardwareRequired, StateOfSoftware stateOfSoftware, String license, Contract contract) throws EntityExistsException {
+    public void create(int id, Client client, String hardwareRequired, StateOfSoftware stateOfSoftware, String license, Contract contract) throws EntityExistsException {
         try {
             ProductConfiguration p = em.find(ProductConfiguration.class, id);
             if (p != null) {
                 throw new EntityExistsException("ERROR: Can't create new product configuration because already exists a product configuration with this id: " + id);
             }
 
-            ProductConfiguration productConfiguration = new ProductConfiguration(id, client, hardwareRequired, stateOfSoftware, license, description, contract);
+            ProductConfiguration productConfiguration = new ProductConfiguration( client, hardwareRequired, stateOfSoftware, license, contract);
             em.persist(productConfiguration);
 
         } catch (EntityExistsException e) {
@@ -57,6 +58,7 @@ public class ProductConfigurationBean {
     }
 
     @POST
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(ProductConfigurationDTO productConfigurationDTO) throws EntityExistsException {
         try {
@@ -64,9 +66,11 @@ public class ProductConfigurationBean {
             if (p != null) {
                 throw new EntityExistsException("ERROR: Can't create new product configuration because already exists a product configuration with this id: " + productConfigurationDTO.getId());
             }
-
-            ProductConfiguration productConfiguration = new ProductConfiguration(productConfigurationDTO.getId(),productConfigurationDTO.getClient(),productConfigurationDTO.getHardwareRequired(),productConfigurationDTO.getstateOfSoftware(),productConfigurationDTO.getLicense(),productConfigurationDTO.getDescription(), productConfigurationDTO.getContract());
+             Client c = em.find(Client.class, productConfigurationDTO.getUsername());
+            
+            ProductConfiguration productConfiguration = new ProductConfiguration(c,productConfigurationDTO.getHardwareRequired(),productConfigurationDTO.getstateOfSoftware(),productConfigurationDTO.getLicense(), productConfigurationDTO.getContract());
             em.persist(productConfiguration);
+            c.addConfiguration(productConfiguration);
         } catch (EntityExistsException e) {
             throw e;
         } catch (Exception e) {
@@ -76,6 +80,7 @@ public class ProductConfigurationBean {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public ProductConfigurationDTO getProductConfiguration(@PathParam("id") int id) throws EntityExistsException {
@@ -90,9 +95,25 @@ public class ProductConfigurationBean {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    @GET
+    @Path("client/{username}")
+    @RolesAllowed({"Client"})
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<ProductConfigurationDTO> getProductConfigurationForClient(@PathParam("username") String username) throws EntityExistsException {
+        try {
+            List<ProductConfiguration> productConfigurations = em.createNamedQuery("getProductsByUsername").setParameter("username", username).getResultList();
+            return productConfigurationsToDTOs(productConfigurations);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
 
 
     @GET
+    @RolesAllowed({"Administrator"})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<ProductConfigurationDTO> getAll() {
         try {
@@ -104,6 +125,7 @@ public class ProductConfigurationBean {
     }
 
     @DELETE
+    @RolesAllowed({"Administrator"})
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("id") int id) {
@@ -131,10 +153,11 @@ public class ProductConfigurationBean {
     }
 
     public ProductConfigurationDTO productConfigurationToDTO(ProductConfiguration productConfiguration) {
-        return new ProductConfigurationDTO(productConfiguration.getClient(),productConfiguration.getHardwareRequired(),productConfiguration.getstateOfSoftware(),productConfiguration.getLicense(),productConfiguration.getId(),productConfiguration.getDescription(), productConfiguration.getContract());
+        return new ProductConfigurationDTO(productConfiguration.getClient().getUsername(),productConfiguration.getHardwareRequired(),productConfiguration.getstateOfSoftware(),productConfiguration.getLicense(),productConfiguration.getId(), productConfiguration.getContract());
     }
 
     @PUT
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateRest(ProductConfigurationDTO productConfigurationDTO) throws EntityDoesNotExistsException {
         try {
@@ -143,9 +166,9 @@ public class ProductConfigurationBean {
             if (p == null) {
                 throw new EntityDoesNotExistsException("ERROR: Can't update that product configuration because doesn't exists a product configuration with thid id: " + p.getId());
             }
-
-          p.setClient(productConfigurationDTO.getClient());
-          p.setDescription(productConfigurationDTO.getDescription());
+             Client c = em.find(Client.class, productConfigurationDTO.getUsername());
+            
+          p.setClient(c);
           p.setHardwareRequired(productConfigurationDTO.getHardwareRequired());
           p.setId(productConfigurationDTO.getId());
           p.setLicense(productConfigurationDTO.getLicense());
@@ -156,6 +179,4 @@ public class ProductConfigurationBean {
             throw new EJBException(e.getMessage());
         }
     }
-    
-    
 }

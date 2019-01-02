@@ -14,19 +14,17 @@ import java.io.Serializable;
 public class ContractDTO implements Serializable{
     private int id;
     
-    private int idClient;
+    private String idClient;
     
-    private int idAdmin;
     
     private String contractInfo;
 
     public ContractDTO() {
     }
 
-    public ContractDTO(int id, int idClient, int idAdmin, String contractInfo) {
+    public ContractDTO(int id, String idClient, String contractInfo) {
         this.id = id;
         this.idClient = idClient;
-        this.idAdmin = idAdmin;
         this.contractInfo = contractInfo;
     }
 
@@ -38,20 +36,12 @@ public class ContractDTO implements Serializable{
         this.id = id;
     }
 
-    public int getIdClient() {
+    public String getIdClient() {
         return idClient;
     }
 
-    public void setIdClient(int idClient) {
+    public void setIdClient(String idClient) {
         this.idClient = idClient;
-    }
-
-    public int getIdAdmin() {
-        return idAdmin;
-    }
-
-    public void setIdAdmin(int idAdmin) {
-        this.idAdmin = idAdmin;
     }
 
     public String getContractInfo() {

@@ -20,7 +20,7 @@ public class TemplateDTO implements Serializable {
     private String description;
     private LinkedList<Software> software;
 
-    public TemplateDTO(int id, String description) {
+    public TemplateDTO(int id,String description) {
         this.id = id;
         this.description = description;
         this.software = new LinkedList<>();

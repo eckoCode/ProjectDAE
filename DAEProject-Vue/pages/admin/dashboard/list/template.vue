@@ -8,12 +8,8 @@
       </v-card-title>
       <v-data-table :headers="headers" :items="templates" :search="search">
         <template slot="items" slot-scope="props">
-          <td>{{ props.item.name }}</td>
-          <td class="text-xs-left">{{ props.item.baseCode }}</td>
-          <td class="text-xs-left">{{ props.item.baseVersion }}</td>
+          <td class="text-xs-left">{{ props.item.id }}</td>
           <td class="text-xs-left">{{ props.item.description }}</td>
-          <td class="text-xs-left">{{ props.item.parameterization }}</td>
-          <td class="text-xs-left">{{ props.item.supportMaterials }}</td>
           <td class="justify-center layout px-0">
             <v-icon small class="mr-2" @click="editTemplate(props.item)">edit</v-icon>
             <v-icon small @click="deleteTemplate(props.item)">delete</v-icon>
@@ -38,23 +34,11 @@
         <v-card-text>
           <v-container grid-list-md>
             <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedTemplate.name" label="Name"></v-text-field>
+              <v-flex xs12 sm6 md6>
+                <v-text-field v-model="editedTemplate.id" label="Id"></v-text-field>
               </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedTemplate.baseCode" label="Base Code"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedTemplate.baseVersion" label="Base Version"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
+              <v-flex xs12 sm6 md6>
                 <v-text-field v-model="editedTemplate.description" label="Description"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedTemplate.parameterization" label="Parameterization"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedTemplate.supportMaterials" label="Support Materials"></v-text-field>
               </v-flex>
             </v-layout>
           </v-container>
@@ -76,34 +60,15 @@
       return {
         search: "",
         headers: [{
-          text: "Name",
-          align: "left",
-          sortable: true,
-          value: "name"
-        },
-          {
-            text: "Base Code",
+            text: "Id",
+            align: "left",
             sortable: true,
-            value: "baseCode"
-          },
-          {
-            text: "Base Version",
-            sortable: true,
-            value: "baseVersion"
+            value: "id"
           },
           {
             text: "Description",
             sortable: true,
             value: "description"
-          }, {
-            text: "Parametrization",
-            sortable: true,
-            value: "parameterization"
-          },
-          {
-            text: "Support Materials",
-            sortable: true,
-            value: "supportMaterials"
           },
           {
             text: "Actions"
@@ -113,20 +78,12 @@
         dialog: false,
         editedIndex: -1,
         editedTemplate: {
-          description: '',
-          baseCode: '',
-          baseVersion: '',
-          name: '',
-          parameterization: '',
-          supportMaterials: ''
+          id: '',
+          description: ''
         },
         defaultTemplate: {
-          description: '',
-          baseCode: '',
-          baseVersion: '',
-          name: '',
-          parameterization: '',
-          supportMaterials: ''
+          id: '',
+          description: ''
         }
       };
     },
@@ -135,7 +92,7 @@
     },
     computed: {
         formTitle () {
-        return this.editedIndex === -1 ? 'New Template' : 'Edit Template'
+          return this.editedIndex === -1 ? 'New Template' : 'Edit Template'
       }
     },
 
@@ -146,7 +103,7 @@
     },
     methods: {
       fetchTemplates: function () {
-        this.$axios.get('api/templates')
+        this.$axios.get('api/templates', {auth:{username:this.$axios.defaults.auth.username, password:this.$axios.defaults.auth.password}})
           .then(response => {
             console.log(response);
             this.templates = response.data;
@@ -157,7 +114,7 @@
       },
       deleteTemplate: function (template) {
         console.log(template);
-        this.$axios.delete('api/templates/' + template.name).then(response => {
+        this.$axios.delete('api/templates/' + template.id).then(response => {
           this.fetchTemplates();
           console.log("Template deleted")
         }).catch(error => {
@@ -165,7 +122,9 @@
         })
       },
       editTemplate(template) {
-        Object.assign(this.editedTemplate, template);
+        //Object.assign(this.editedTemplate, template);
+        this.editedTemplate.id = template.id;
+        this.editedTemplate.description = template.description;
         this.dialog = true;
         console.log(this.editedTemplate);
       },
@@ -178,14 +137,16 @@
       },
 
       save() {
-          this.$axios.put('api/templates/',this.editedTemplate).then(response => {
+        console.log("A Gravar este: ", this.editedTemplate);
+          this.$axios.put('api/templates/',this.editedTemplate)
+          .then(response => {
             this.fetchTemplates();
             console.log("Template edited")
           }).catch(error => {
-            console.log(error.message);
+            console.log("EUUUUUU",error.message);
           });
-          Object.assign(this.templates[this.editedIndex], this.editedTemplate)
-		  this.close();
+          //Object.assign(this.templates[this.editedIndex], this.editedTemplate)
+		      this.close();
       }
     }
   };

@@ -1,7 +1,7 @@
 <template>
-    <v-form ref="form" v-model="valid" lazy-validation>
+    <v-form ref="form" lazy-validation>
         <v-text-field v-model="name" :rules="nameRules" :counter="10" label="Name" required></v-text-field>
-        <v-text-field v-model="position" :rules="positionRules" :counter="10" label="Position" required></v-text-field>
+        <v-overflow-btn v-model="roleUser" :items="role" tag="Role"></v-overflow-btn>
         <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
         <v-text-field v-model="username" :rules="nameRules" :counter="10" label="Username" required></v-text-field>
         <v-text-field v-model="password" :type="'password'" :rules="passwordRules" :counter="10" label="Password" required></v-text-field>
@@ -29,16 +29,22 @@
                 v => !!v || 'Password is required',
                 v => (v && v.length >= 6) || 'Password must be have at leas 6 characters'
             ],
-            position: '',
+            role: '',
             positionRules: [
                 v => !!v || 'Position is required'
             ],
-            name: '',
-            position: '',
-            email: '',
             username: '',
-            password: ''
+            role: [
+                'Manager',
+                'Developer',
+                'Tester',
+                'Janitor',
+                'Front end Developer',
+                'Back end Developer'
+            ],
+            roleUser: ''
         }),
+    
     
     
     
@@ -51,7 +57,7 @@
                         password: this.password,
                         name: this.name,
                         email: this.email,
-                        position: this.position,
+                        role: this.roleUser,
                     };
     
                     this.$axios.post('api/admins', admin)

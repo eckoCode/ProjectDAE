@@ -3,13 +3,13 @@
     <v-card>
       <v-card-title>Clients
         <v-spacer></v-spacer>
-        <v-text-field v-model="search" append-icon="search" label="Search by name" single-line hide-details></v-text-field>
+        <v-text-field v-model="search" append-icon="search" label="Search by company name" single-line hide-details></v-text-field>
       </v-card-title>
       <v-data-table :headers="headers" :items="clients" :search="search">
         <template slot="items" slot-scope="props">
                           <td>{{ props.item.companyName }}</td>
                           <td class="text-xs-left">{{ props.item.address }}</td>
-                          <td class="text-xs-left">{{ props.item.contactPeople }}</td>
+                          <td class="text-xs-left">{{ props.item.contactPerson }}</td>
                           <td class="text-xs-left">{{ props.item.username }}</td>
                           <td class="justify-center layout px-0">
                         <v-icon small class="mr-2" @click="editClient(props.item)">edit</v-icon>
@@ -28,20 +28,20 @@
     <v-dialog v-model="dialog" max-width="500px">
         <v-card>
           <v-card-title>
-            <span class="headline">Edit admin</span>
+            <span class="headline">Edit client</span>
           </v-card-title>
 
           <v-card-text>
             <v-container grid-list-md>
               <v-layout wrap>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedClient.companyName" label="Name"></v-text-field>
+                  <v-text-field v-model="editedClient.companyName" label="Company name"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedClient.address" label="Position"></v-text-field>
+                  <v-text-field v-model="editedClient.address" label="Address"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
-                  <v-text-field v-model="editedClient.contactPeople" label="Email"></v-text-field>
+                  <v-text-field v-model="editedClient.contactPerson" label="Contact person"></v-text-field>
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-text-field disabled v-model="editedClient.username" label="Username"></v-text-field>
@@ -69,22 +69,19 @@
             text: "Company name",
             align: "left",
             sortable: true,
-            value: "name"
+            value: "companyName"
           },
           {
             text: "Address",
             sortable: true,
-            value: "calories"
           },
           {
             text: "Contact person",
             sortable: true,
-            value: "fat"
           },
           {
             text: "Username",
             sortable: true,
-            value: "carbs"
           },
           {
             text: "Actions"
@@ -95,7 +92,7 @@
         editedClient: {
           contactName: '',
           address: '',
-          contactpeople: '',
+          contactPerson: '',
           username: '',
         }
       };
@@ -105,7 +102,7 @@
     },
     methods: {
       fetchClients: function() {
-        this.$axios.get('api/clients')
+          this.$axios.get('api/clients', {auth:{username:this.$axios.defaults.auth.username, password:this.$axios.defaults.auth.password}})
           .then(response => {
             console.log(response);
             this.clients = response.data;
@@ -113,6 +110,8 @@
           .catch(error => {
             console.log(error);
           });
+
+      
       },
       deleteClient: function(client) {
         console.log(client);

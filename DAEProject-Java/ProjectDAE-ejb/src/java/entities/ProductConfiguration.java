@@ -5,6 +5,7 @@
  */
 package entities;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -13,10 +14,14 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -32,14 +37,21 @@ import javax.persistence.Table;
 @DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("ProductConfiguration")
 @Table(name = "ProductConfiguration")
-@NamedQuery(name = "getAllproductConfigurations", query = "SELECT a FROM ProductConfiguration a")
-public class ProductConfiguration extends Template {
-       
+@NamedQueries({
+    @NamedQuery(name = "getAllproductConfigurations", query = "SELECT a FROM ProductConfiguration a"),
+    @NamedQuery(name="getProductsByUsername", query = "Select a From ProductConfiguration a Where a.client.username = :username")
+
+})
+public class ProductConfiguration implements Serializable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "CLIENT_USERNAME", nullable = false)
     private Client client;
     
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "CONTRACT_ID",nullable = false)
     private Contract contract;
     
@@ -55,14 +67,13 @@ public class ProductConfiguration extends Template {
     private String license;
     
     @OneToMany
-    @JoinColumn(name = "id",nullable = false)
+    @JoinColumn(name = "filename",nullable = false)
     private List<File> supportMatterials;
      
     public ProductConfiguration() {
     }
 
-    public ProductConfiguration(int id, Client client, String hardwareRequired, StateOfSoftware stateOfSoftware, String license, String description, Contract contract) {
-        super(id, description);
+    public ProductConfiguration(Client client, String hardwareRequired, StateOfSoftware stateOfSoftware, String license, Contract contract) {
         this.client = client;
         this.contract = contract;
         this.hardwareRequired = hardwareRequired;
@@ -83,6 +94,15 @@ public class ProductConfiguration extends Template {
     public String getHardwareRequired() {
         return hardwareRequired;
     }
+    
+     public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
 
     public void setHardwareRequired(String hardwareRequired) {
         this.hardwareRequired = hardwareRequired;

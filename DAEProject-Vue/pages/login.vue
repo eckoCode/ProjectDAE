@@ -57,12 +57,13 @@ export default {
     methods: {
         submit () {
         if (this.$refs.form.validate()) {
-            let credentials = {
+            let configData = { auth: { username: this.username, password: this.password } }
+            /*let auth = {
                 username: this.username,
                 password: this.password
-            };
+            };*/
            
-            this.$axios.defaults.auth = credentials;
+            this.$axios.defaults.auth = { username: this.username, password: this.password };
             this.$router.push("admin/dashboard");
             /*
             this.$axios.$post('/api/login', credentials)

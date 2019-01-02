@@ -8,7 +8,6 @@ package dtos;
 import entities.Client;
 import entities.Contract;
 import entities.File;
-import entities.Software;
 import entities.StateOfSoftware;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,8 +16,10 @@ import java.util.List;
  *
  * @author rubenfilipe
  */
-public class ProductConfigurationDTO extends TemplateDTO{
-    private Client client;
+public class ProductConfigurationDTO{
+    private int id;
+    
+    private String username;
     
     private String hardwareRequired;
     
@@ -30,9 +31,9 @@ public class ProductConfigurationDTO extends TemplateDTO{
     
     private Contract contract;
 
-    public ProductConfigurationDTO(Client client, String hardwareRequired, StateOfSoftware stateOfSoftware, String license, int id, String description, Contract contract) {
-        super(id, description);
-        this.client = client;
+    public ProductConfigurationDTO(String username, String hardwareRequired, StateOfSoftware stateOfSoftware, String license, int id, Contract contract) {
+       this.id = id;
+        this.username  = username;
         this.hardwareRequired = hardwareRequired;
         this.stateOfSoftware = stateOfSoftware;
         this.license = license;
@@ -40,17 +41,27 @@ public class ProductConfigurationDTO extends TemplateDTO{
         this.contract = contract;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+   
+
     public ProductConfigurationDTO() {
     }
 
-    public Client getClient() {
-        return client;
+    public String getUsername() {
+        return username;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
+    
     public String getHardwareRequired() {
         return hardwareRequired;
     }

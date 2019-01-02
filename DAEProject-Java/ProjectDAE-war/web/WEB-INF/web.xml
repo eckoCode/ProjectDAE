@@ -21,5 +21,47 @@
     <welcome-file-list>
         <welcome-file>faces/index.html</welcome-file>
     </welcome-file-list>
-
+    <security-constraint>
+        <display-name>Administrator</display-name>
+        <web-resource-collection>
+            <web-resource-name>Administrator</web-resource-name>
+            <description/>
+            <url-pattern>/api/admins/*</url-pattern>
+            <url-pattern>/api/clients/*</url-pattern>
+            <url-pattern>/api/productConfig/*</url-pattern>
+            <http-method>GET</http-method>
+            <http-method>PUT</http-method>
+            <http-method>POST</http-method>
+            <http-method>DELETE</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Administrator</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>ClientConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Client</web-resource-name>
+            <description/>
+            <url-pattern>/api/clients/*</url-pattern>
+            <url-pattern>/api/productConfig/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Client</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>dae_project_realm</realm-name>
+    </login-config>
+    <security-role>
+        <description/>
+        <role-name>Administrator</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>Client</role-name>
+    </security-role>
 </web-app>
