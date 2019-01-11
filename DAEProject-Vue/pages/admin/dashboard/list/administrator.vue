@@ -7,14 +7,14 @@ q<template>
       </v-card-title>
       <v-data-table :headers="headers" :items="admins" :search="search">
         <template slot="items" slot-scope="props">
-                          <td>{{ props.item.name }}</td>
-                          <td class="text-xs-left">{{ props.item.role }}</td>
-                          <td class="text-xs-left">{{ props.item.email }}</td>
-                          <td class="text-xs-left">{{ props.item.username }}</td>
-                          <td class="justify-center layout px-0">
-                        <v-icon small class="mr-2" @click="editAdmin(props.item)">edit</v-icon>
-                        <v-icon small @click="deleteAdmin(props.item)">delete </v-icon>
-                      </td>
+              <td>{{ props.item.name }}</td>
+              <td class="text-xs-left">{{ props.item.role }}</td>
+              <td class="text-xs-left">{{ props.item.email }}</td>
+              <td class="text-xs-left">{{ props.item.username }}</td>
+              <td class="justify-center layout px-0">
+            <v-icon small class="mr-2" @click="editAdmin(props.item)">edit</v-icon>
+            <v-icon small @click="deleteAdmin(props.item)">delete </v-icon>
+          </td>
         </template>
         <v-alert
           slot="no-results"

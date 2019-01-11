@@ -11,11 +11,11 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -34,7 +34,7 @@ import javax.persistence.Table;
 })
 public class Artifact implements Serializable{
     @Id
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
     @Column(nullable = false)
@@ -46,8 +46,7 @@ public class Artifact implements Serializable{
     
     private String libraries;
 
-    public Artifact(int id, String sourceCode, String database, String scripts, String libraries) {
-        this.id = id;
+    public Artifact( String sourceCode, String database, String scripts, String libraries) {
         this.sourceCode = sourceCode;
         this.database = database;
         this.scripts = scripts;
@@ -57,8 +56,7 @@ public class Artifact implements Serializable{
     public Artifact() {
     }
 
-    public Artifact(int id, String sourceCode) {
-        this.id = id;
+    public Artifact(String sourceCode) {
         this.sourceCode = sourceCode;
     }
 

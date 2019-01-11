@@ -4,6 +4,7 @@
         <v-text-field v-model="address" :rules="addressRules" :counter="10" label="Address" required></v-text-field>
         <v-text-field v-model="contactPerson" :rules="contactPeoplelRules" label="Contact person" required></v-text-field>
         <v-text-field v-model="username" :rules="usernameRules" :counter="10" label="Username" required></v-text-field>
+        <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
         <v-text-field v-model="password" :type="'password'" :rules="passwordRules" :counter="10" label="Password" required></v-text-field>
     
         <v-btn :disabled="!valid" @click="submit">submit</v-btn>
@@ -18,6 +19,11 @@
             companyName: '',
             companyNameRules: [
                 v => !!v || 'Company name is required'
+            ],
+            email: '',
+            emailRules: [
+                v => !!v || 'E-mail is required',
+                v => /.+@.+/.test(v) || 'E-mail must be valid'
             ],
             address: '',
             addressRules: [
@@ -46,6 +52,7 @@
                         password: this.password,
                         companyName: this.companyName,
                         contactPerson: this.contactPerson,
+                        email: this.email,
                         address: this.address,
                     };
     

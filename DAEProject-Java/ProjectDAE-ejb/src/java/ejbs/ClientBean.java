@@ -38,7 +38,7 @@ public class ClientBean {
     EntityManager em;
     
 
-    public void create(String username, String password, String address, String companyName, String contactPerson) throws EntityExistsException {
+    public void create(String username, String password, String address, String companyName, String contactPerson, String email) throws EntityExistsException {
         try {
             Client c = em.find(Client.class, username);
 
@@ -46,7 +46,7 @@ public class ClientBean {
                 throw new EntityExistsException("ERROR: Can't create new client because already exists a client with the username: " + username);
             }
 
-            Client client = new Client(address,companyName,contactPerson,username,password);
+            Client client = new Client(address,companyName,contactPerson,username,password, email);
             em.persist(client);
         } catch (EntityExistsException e) {
             throw e;
@@ -65,7 +65,7 @@ public class ClientBean {
                 throw new EntityExistsException("ERROR: Can't create new client because already exists a client with the username: " + client.getUsername());
             }
 
-            Client c = new Client(client.getAddress(),client.getCompanyName(),client.getContactPerson(), client.getUsername(),client.getPassword());
+            Client c = new Client(client.getAddress(),client.getCompanyName(),client.getContactPerson(), client.getUsername(),client.getPassword(), client.getEmail());
             em.persist(c);
         } catch (EntityExistsException e) {
             throw e;
@@ -144,11 +144,11 @@ public class ClientBean {
     }
 
     public ClientDTO clientToDTO(Client c) {
-        return new ClientDTO(c.getAddress(), c.getCompanyName(), c.getContactPerson(), c.getUsername(), null);
+        return new ClientDTO(c.getAddress(), c.getCompanyName(), c.getContactPerson(), c.getUsername(), null, c.getEmail());
     }
 
     public List<ClientDTO> clientsToDTOs(List<Client> clients) {
-        List<ClientDTO> clientsDTO = new LinkedList<ClientDTO>();
+        List<ClientDTO> clientsDTO = new LinkedList<>();
 
         for (Client c : clients) {
             clientsDTO.add(clientToDTO(c));

@@ -102,7 +102,23 @@
               </v-list-tile-action>
             </v-list-tile>
           </nuxt-link>
+			<nuxt-link tag="span" to="/admin/dashboard/add/csv/template">
+				<v-list-tile slot="activator" @click>
+					<v-list-tile-title class="white--text text--white-1">Create Template by CSV</v-list-tile-title>
+					<v-list-tile-action>
+						<v-icon>receipt</v-icon>
+					</v-list-tile-action>
+				</v-list-tile>
+			</nuxt-link>
         </v-list-group>
+         <nuxt-link tag="span" to="/admin/dashboard/list/qa">
+            <v-list-tile slot="activator" @click>
+              <v-list-tile-title class="white--text text--white-1">QA</v-list-tile-title>
+              <v-list-tile-action>
+                <v-icon>receipt</v-icon>
+              </v-list-tile-action>
+            </v-list-tile>
+          </nuxt-link>
       </v-list>
     </v-navigation-drawer>
     <v-content>
@@ -116,7 +132,6 @@
     </v-content>
   </v-app>
 </template>
-
 <script>
 export default {};
 </script>

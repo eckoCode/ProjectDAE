@@ -6,12 +6,14 @@
 package ejbs;
 
 import dtos.SoftwareDTO;
+import entities.Artifact;
 import entities.Software;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.EntityExistsException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PreDestroy;
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -43,17 +45,17 @@ public class SoftwareBean {
     {
         em.close();
     }
-
-    public void create(int id, String name, Double version) throws EntityExistsException {
+        
+ 
+    
+    public void create(int id, String name, Double version, LinkedList<Artifact> artifacts) throws EntityExistsException {
         try {
             Software s = em.find(Software.class, id);
             if (s != null) {
                 throw new EntityExistsException("ERROR: Can't create new software because already exists a software with this id: " + id);
             }
-
-            Software software = new Software( name, version);
-            em.persist(software);
-
+            Software software = new Software( name, version, artifacts);
+            em.merge(software);
         } catch (EntityExistsException e) {
             throw e;
         } catch (Exception e) {
@@ -66,15 +68,12 @@ public class SoftwareBean {
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(SoftwareDTO softwareDTO) throws EntityExistsException {
         try {
-            Software p = em.find(Software.class, softwareDTO.getId());
-            if (p != null) {
-                throw new EntityExistsException("ERROR: Can't create new software because already exists a software with this id: " + softwareDTO.getId());
+            Software s = em.find(Software.class, softwareDTO.getId());
+            if (s != null) {
+                throw new EntityExistsException("ERROR: Can't create new software because already exists a software with this id: " + s.getId());
             }
-
-            Software software = new Software(softwareDTO.getName(), softwareDTO.getVersion());
-            em.persist(software);
-        } catch (EntityExistsException e) {
-            throw e;
+            Software software = new Software(softwareDTO.getName(), softwareDTO.getVersion(), softwareDTO.getArtifacts());
+            em.merge(software);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -100,11 +99,11 @@ public class SoftwareBean {
 
 
     @GET
-    @RolesAllowed({"Administrator"})
+       @PermitAll
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<SoftwareDTO> getAll() {
         try {
-            List<Software> softwares = em.createNamedQuery("getAllsoftware").getResultList();
+            List<Software> softwares = em.createNamedQuery("getAllSoftware").getResultList();
             return softwareToDTOs(softwares);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
@@ -140,7 +139,7 @@ public class SoftwareBean {
     }
 
     public SoftwareDTO softwareToDTO(Software software) {
-        return new SoftwareDTO(software.getName(),software.getVersion());
+        return new SoftwareDTO(software.getId(), software.getName(),software.getVersion(), software.getArtifacts());
     }
 
     @PUT

@@ -7,6 +7,7 @@ package ejbs;
 
 import dtos.ModuleDTO;
 import entities.Modules;
+import entities.Software;
 import exceptions.EntityExistsException;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,20 +28,20 @@ import javax.ws.rs.core.MediaType;
  * @author rubenfilipe
  */
 @Stateless
-@Path("module")
+@Path("modules")
 public class ModuleBean {
     @PersistenceContext
     EntityManager em;
     
-     public void create(int id, String parametrization) throws EntityExistsException {
+     public void create(int id, String parametrization , LinkedList<Software> extensions) throws EntityExistsException {
         try {
             Modules m = em.find(Modules.class, id);
             if (m != null) {
                 throw new EntityExistsException("ERROR: Can't create new artifact because already exists a artifact with this id: " + id);
             }
 
-            Modules module = new Modules(id, parametrization);
-            em.persist(module);
+            Modules module = new Modules(parametrization, extensions);
+            em.merge(module);
 
         } catch (EntityExistsException e) {
             throw e;
@@ -59,8 +60,8 @@ public class ModuleBean {
                   throw new EntityExistsException("ERROR: Can't create new artifact because already exists a artifact with this id: " + moduleDTO.getId());
             }
 
-            Modules modules = new Modules(moduleDTO.getId(),moduleDTO.getParametrization());
-            em.persist(modules);
+            Modules modules = new Modules(moduleDTO.getParametrization(), moduleDTO.getExtension());
+            em.merge(modules);
         } catch (EntityExistsException e) {
             throw e;
         } catch (Exception e) {
@@ -85,7 +86,7 @@ public class ModuleBean {
   
 
     public List<ModuleDTO> modulesToDTOs(List<Modules> modules) {
-        List<ModuleDTO> modulesDTOs = new LinkedList<ModuleDTO>();
+        List<ModuleDTO> modulesDTOs = new LinkedList<>();
 
         for (Modules m : modules) {
             modulesDTOs.add(moduleToDTO(m));
@@ -94,6 +95,6 @@ public class ModuleBean {
     }
 
     public ModuleDTO moduleToDTO(Modules modules) {
-        return new ModuleDTO(modules.getId(),modules.getParametrization());
+        return new ModuleDTO(modules.getId(),modules.getParametrization(), modules.getExtension());
     } 
 }

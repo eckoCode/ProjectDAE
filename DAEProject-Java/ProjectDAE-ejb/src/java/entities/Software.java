@@ -15,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -30,7 +31,6 @@ import javax.persistence.Table;
 public class Software implements Serializable{
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(nullable = false)
     private int id;
     
     @Column(nullable = false)
@@ -39,19 +39,26 @@ public class Software implements Serializable{
     @Column(nullable = false)
     private Double version;
 
-    @OneToMany
-    private  List<Artifact> artifacts;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private  LinkedList<Artifact> artifacts;
     
-
-    public Software(String name, Double version) {
+    
+    public Software(String name, Double version, LinkedList<Artifact> artifacts) {
         this.name = name;
         this.version = version;
-        this.artifacts = new LinkedList<>();
+        this.artifacts = artifacts;
     }
 
     public Software() {
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -69,21 +76,12 @@ public class Software implements Serializable{
         this.version = version;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public List<Artifact> getArtifacts() {
+    public LinkedList<Artifact> getArtifacts() {
         return artifacts;
     }
 
-    public void setArtifacts(Artifact artifacts) {
-        this.artifacts.add(artifacts);
+    public void setArtifacts(LinkedList<Artifact> artifacts) {
+        this.artifacts = artifacts;
     }
-    
     
 }

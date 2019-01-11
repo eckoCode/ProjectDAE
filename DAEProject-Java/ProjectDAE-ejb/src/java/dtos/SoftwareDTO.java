@@ -5,7 +5,9 @@
  */
 package dtos;
 
+import entities.Artifact;
 import java.io.Serializable;
+import java.util.LinkedList;
 
 /**
  *
@@ -15,14 +17,16 @@ public class SoftwareDTO implements Serializable{
     private String name;
     private Double version;
     private int id;
+    private LinkedList<Artifact> artifacts;
 
     public SoftwareDTO() {
     }
 
-    public SoftwareDTO(String name, Double version) {
+    public SoftwareDTO(int id, String name, Double version, LinkedList<Artifact> artifacts) {
         this.name = name;
         this.version = version;
         this.id=id;
+        this.artifacts = artifacts;
     }
 
     public String getName() {
@@ -48,7 +52,12 @@ public class SoftwareDTO implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
-    
-    
-    
+
+    public LinkedList<Artifact> getArtifacts() {
+        return artifacts;
+    }
+
+    public void setArtifacts(LinkedList<Artifact> artifacts) {
+        this.artifacts = artifacts;
+    } 
 }

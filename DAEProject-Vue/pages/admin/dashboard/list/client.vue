@@ -11,6 +11,7 @@
                           <td class="text-xs-left">{{ props.item.address }}</td>
                           <td class="text-xs-left">{{ props.item.contactPerson }}</td>
                           <td class="text-xs-left">{{ props.item.username }}</td>
+                           <td class="text-xs-left">{{ props.item.email }}</td>
                           <td class="justify-center layout px-0">
                         <v-icon small class="mr-2" @click="editClient(props.item)">edit</v-icon>
                         <v-icon small @click="deleteClient(props.item)">delete </v-icon>
@@ -45,6 +46,9 @@
                 </v-flex>
                 <v-flex xs12 sm6 md4>
                   <v-text-field disabled v-model="editedClient.username" label="Username"></v-text-field>
+                </v-flex>
+                <v-flex xs12 sm6 md4>
+                  <v-text-field disabled v-model="editedClient.email" label="Email"></v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -83,6 +87,10 @@
             text: "Username",
             sortable: true,
           },
+           {
+            text: "Email",
+            sortable: true,
+          },
           {
             text: "Actions"
           }
@@ -94,6 +102,7 @@
           address: '',
           contactPerson: '',
           username: '',
+          email: ''
         }
       };
     },
@@ -136,7 +145,7 @@
       },
   
       save() {
-        this.$axios.put('api/clients/' + this.editedClient.username).then(response => {
+        this.$axios.put('api/clients' , this.editedClient).then(response => {
           this.fetchClients();
           this.close()
           console.log("Client edited")

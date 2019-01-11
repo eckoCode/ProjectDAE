@@ -22,15 +22,15 @@ public class ModuleDTO {
     
     private String parametrization; 
     
-    private List<Software> extension;
+    private LinkedList<Software> extension;
 
     public ModuleDTO() {
     }
 
-    public ModuleDTO(int id, String parametrization) {
+    public ModuleDTO(int id, String parametrization, LinkedList<Software> extension) {
         this.id = id;
         this.parametrization = parametrization;
-        this.extension = new LinkedList<>();
+        this.extension = extension;
     }
 
     public int getId() {
@@ -49,15 +49,11 @@ public class ModuleDTO {
         this.parametrization = parametrization;
     }
 
-    public List<Software> getExtension() {
+    public LinkedList<Software> getExtension() {
         return extension;
     }
 
-    public void setExtension(Software extension) {
-        this.extension.add(extension);
+    public void setExtension(LinkedList<Software> extension) {
+        this.extension = extension;
     }
-    
-    
-
-    
 }

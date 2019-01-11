@@ -7,12 +7,12 @@ package entities;
 
 import java.io.Serializable;
 import java.util.LinkedList;
-import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -23,22 +23,31 @@ import javax.persistence.Table;
 @NamedQuery(name = "getAllModules", query = "SELECT m FROM Modules m")
 public class Modules implements Serializable{
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
     @Column(nullable = false)
     private String parametrization; //é uma string ou uma classe nova?
     
-    private List<Software> extension;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    private LinkedList<Software> extension;
 
     public Modules() {
     }
 
-    public Modules(int id, String parametrization) {
-        this.id = id;
+    public Modules(String parametrization, LinkedList<Software> extension) {
         this.parametrization = parametrization;
-        this.extension = new LinkedList<>();
+        this.extension = extension;
     }
 
+    public LinkedList<Software> getExtension() {
+        return extension;
+    }
+
+    public void setExtension(LinkedList<Software> extension) {
+        this.extension = extension;
+    }
+    
     public int getId() {
         return id;
     }
@@ -55,14 +64,5 @@ public class Modules implements Serializable{
         this.parametrization = parametrization;
     }
 
-    public List<Software> getExtension() {
-        return extension;
-    }
-
-    public void setExtension(Software extension) {
-        this.extension.add(extension);
-    }
-
-    
     
 }

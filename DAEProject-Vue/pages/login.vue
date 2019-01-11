@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <v-container pt-5 mt-5>
-           
+
             <v-form ref="form" v-model="valid" lazy-validation>
                 <v-text-field
                     v-model="username"
@@ -33,13 +33,14 @@
         </v-container>
     </v-app>
 </template>
- 
+
 <script>
 export default {
     data () {
     return {
         show1: false,
         password: '',
+		type: '',
         rules: {
             required: value => !!value || 'Required.',
             min: v => v.length >= 4 || 'Min 4 characters'
@@ -62,22 +63,24 @@ export default {
                 username: this.username,
                 password: this.password
             };*/
-           
             this.$axios.defaults.auth = { username: this.username, password: this.password };
-            this.$router.push("admin/dashboard");
-            /*
-            this.$axios.$post('/api/login', credentials)
-            .then(function (response) {
-                console.log(response);
-                //
- 
+			let vm= this;
+            this.$axios.$get('/api/users/'+this.username).then(function (response) {
+            	console.log(response);
+              if (response == "Administrator"){
+				  vm.$router.replace("admin/dashboard");
+			   }else if (response == "Client"){
+				  vm.$router.replace("client/dashboard");
+			   }else{
+				  vm.$router.replace("login");
+			  	}
             })
             .catch(function (error) {
                 console.log(error);
-            });*/
+            });
         }
- 
- 
+
+
         }
     }
 }

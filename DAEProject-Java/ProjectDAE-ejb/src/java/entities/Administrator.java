@@ -31,18 +31,15 @@ public class Administrator extends User implements Serializable {
     
     private String role;
 
-    private String email;
-
 
     public Administrator() {
         super();
     }
 
     public Administrator(String name, String role, String email, String username, String password) {
-        super(GROUP.Administrator,username, password);
+        super(GROUP.Administrator,username, password,email);
         this.name = name;
         this.role = role;
-        this.email = email;
 
     }
 
@@ -62,12 +59,6 @@ public class Administrator extends User implements Serializable {
         this.role = role;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  
 
 }

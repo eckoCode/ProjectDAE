@@ -5,12 +5,12 @@
  */
 package dtos;
 
-import entities.Client;
 import entities.Contract;
-import entities.File;
+import entities.Modules;
+import entities.Qa;
+import entities.Software;
 import entities.StateOfSoftware;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  *
@@ -26,19 +26,51 @@ public class ProductConfigurationDTO{
     private StateOfSoftware stateOfSoftware;
     
     private String license;
+   
+    private String name; 
+   
+    private String description;
     
-    private List<File> supportMatterials;
+    private LinkedList<Software> softwares;
+    
+    private LinkedList<String> supportMatterials;
+    
+     private LinkedList<Modules> modules;
     
     private Contract contract;
+    
+    private LinkedList<Qa> qa;
 
-    public ProductConfigurationDTO(String username, String hardwareRequired, StateOfSoftware stateOfSoftware, String license, int id, Contract contract) {
-       this.id = id;
+    public ProductConfigurationDTO(
+            String username,
+            String hardwareRequired,
+            StateOfSoftware stateOfSoftware,
+            String license,
+            int id,
+            Contract contract,
+            String name,
+            String description,
+            LinkedList<Modules> modules,
+            LinkedList<Software> softwares,
+            LinkedList<String> supportMatterials,
+            LinkedList<Qa> qa) {
+        
+        this.id = id;
         this.username  = username;
+        this.name = name;
+        this.description = description;
         this.hardwareRequired = hardwareRequired;
         this.stateOfSoftware = stateOfSoftware;
         this.license = license;
-        this.supportMatterials = new LinkedList<>();
+        this.supportMatterials = supportMatterials;
+        this.softwares = softwares;
+        this.modules = modules;
         this.contract = contract;
+        this.qa = qa;
+    }
+
+   
+    public ProductConfigurationDTO() {
     }
 
     public int getId() {
@@ -47,10 +79,6 @@ public class ProductConfigurationDTO{
 
     public void setId(int id) {
         this.id = id;
-    }
-   
-
-    public ProductConfigurationDTO() {
     }
 
     public String getUsername() {
@@ -61,7 +89,6 @@ public class ProductConfigurationDTO{
         this.username = username;
     }
 
-    
     public String getHardwareRequired() {
         return hardwareRequired;
     }
@@ -70,11 +97,11 @@ public class ProductConfigurationDTO{
         this.hardwareRequired = hardwareRequired;
     }
 
-    public StateOfSoftware getstateOfSoftware() {
+    public StateOfSoftware getStateOfSoftware() {
         return stateOfSoftware;
     }
 
-    public void setstateOfSoftware(StateOfSoftware stateOfSoftware) {
+    public void setStateOfSoftware(StateOfSoftware stateOfSoftware) {
         this.stateOfSoftware = stateOfSoftware;
     }
 
@@ -86,12 +113,44 @@ public class ProductConfigurationDTO{
         this.license = license;
     }
 
-    public List<File> getSupportMatterials() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LinkedList<Software> getSoftwares() {
+        return softwares;
+    }
+
+    public void setSoftwares(LinkedList<Software> softwares) {
+        this.softwares = softwares;
+    }
+
+    public LinkedList<String> getSupportMatterials() {
         return supportMatterials;
     }
 
-    public void setSupportMatterials(List<File> supportMatterials) {
+    public void setSupportMatterials(LinkedList<String> supportMatterials) {
         this.supportMatterials = supportMatterials;
+    }
+
+    public LinkedList<Modules> getModules() {
+        return modules;
+    }
+
+    public void setModules(LinkedList<Modules> modules) {
+        this.modules = modules;
     }
 
     public Contract getContract() {
@@ -101,6 +160,16 @@ public class ProductConfigurationDTO{
     public void setContract(Contract contract) {
         this.contract = contract;
     }
+
+    public LinkedList<Qa> getQa() {
+        return qa;
+    }
+
+    public void setQa(LinkedList<Qa> qa) {
+        this.qa = qa;
+    }
+
+   
     
     
     

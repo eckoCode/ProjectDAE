@@ -40,7 +40,6 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "getAllproductConfigurations", query = "SELECT a FROM ProductConfiguration a"),
     @NamedQuery(name="getProductsByUsername", query = "Select a From ProductConfiguration a Where a.client.username = :username")
-
 })
 public class ProductConfiguration implements Serializable{
     @Id
@@ -60,27 +59,62 @@ public class ProductConfiguration implements Serializable{
     
     @Column(nullable = false)
     private StateOfSoftware stateOfSoftware;
- 
-    private List<Modules> modules;
+    
+    @OneToMany(cascade = CascadeType.ALL)
+    private LinkedList<Modules> modules;
     
     @Column(nullable = false)
     private String license;
     
-    @OneToMany
-    @JoinColumn(name = "filename",nullable = false)
-    private List<File> supportMatterials;
+    @Column(nullable = false)
+    private String name; 
+    
+    @Column(nullable = false)
+    private String description;
+    
+    //TODO: Merge em vez de persist
+    @OneToMany(cascade = CascadeType.ALL)
+    private LinkedList<Software> softwares;
+    
+    @Column(nullable = false)
+    private LinkedList<String> supportMatterials;
+    
+    @OneToMany(mappedBy = "prodConfig", cascade = CascadeType.PERSIST)
+    private LinkedList<Qa> qaList;
      
     public ProductConfiguration() {
     }
 
-    public ProductConfiguration(Client client, String hardwareRequired, StateOfSoftware stateOfSoftware, String license, Contract contract) {
+    public ProductConfiguration(Client client,String name, String description, String hardwareRequired, 
+            StateOfSoftware stateOfSoftware, String license, Contract contract, LinkedList<Modules> modules, LinkedList<Software> softwares,
+            LinkedList<Qa> qaList){
         this.client = client;
         this.contract = contract;
+        this.description = description;
+        this.name = name;
         this.hardwareRequired = hardwareRequired;
         this.stateOfSoftware = stateOfSoftware;
-        this.modules = new LinkedList<>();
+        this.modules = modules;
         this.license = license;
-        this.supportMatterials = new LinkedList<>();
+        this.supportMatterials =  new LinkedList<>();
+        this.softwares = softwares;
+        this.qaList = new LinkedList<>();
+    }
+
+    public LinkedList<Qa> getQa() {
+        return qaList;
+    }
+
+    public void setQa(Qa qa) {
+        this.qaList.add(qa);
+    }
+    
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Client getClient() {
@@ -91,29 +125,36 @@ public class ProductConfiguration implements Serializable{
         this.client = client;
     }
 
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+
     public String getHardwareRequired() {
         return hardwareRequired;
     }
-    
-     public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-    
 
     public void setHardwareRequired(String hardwareRequired) {
         this.hardwareRequired = hardwareRequired;
     }
 
-    public StateOfSoftware getstateOfSoftware() {
+    public StateOfSoftware getStateOfSoftware() {
         return stateOfSoftware;
     }
 
-    public void setstateOfSoftware(StateOfSoftware stateOfSoftware) {
+    public void setStateOfSoftware(StateOfSoftware stateOfSoftware) {
         this.stateOfSoftware = stateOfSoftware;
+    }
+
+    public LinkedList<Modules> getModules() {
+        return modules;
+    }
+
+    public void setModules(LinkedList<Modules> modules) {
+        this.modules = modules;
     }
 
     public String getLicense() {
@@ -124,32 +165,40 @@ public class ProductConfiguration implements Serializable{
         this.license = license;
     }
 
-    public List<File> getSupportMatterials() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LinkedList<Software> getSoftwares() {
+        return softwares;
+    }
+
+    public void setSoftwares(LinkedList<Software> softwares) {
+        this.softwares = softwares;
+    }
+
+    public LinkedList<String> getSupportMatterials() {
         return supportMatterials;
     }
 
-    public void setSupportMatterials(List<File> supportMatterials) {
-        this.supportMatterials = supportMatterials;
-    }
-
-    public Contract getContract() {
-        return contract;
-    }
-
-    public void setContract(Contract contract) {
-        this.contract = contract;
-    }
-
-    public List<Modules> getModules() {
-        return modules;
-    }
-
-    public void setModules(Modules modules) {
-        this.modules.add(modules);
+    public void setSupportMatterials(String supportMatterials) {
+        this.supportMatterials.add(supportMatterials);
     }
     
     
-    
-  
-    
+   
+
+   
 }

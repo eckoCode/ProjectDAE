@@ -27,7 +27,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Stateless
-@Path("/admins")
+@Path("admins")
 public class AdministratorBean {
 
     @PersistenceContext
@@ -70,7 +70,7 @@ public class AdministratorBean {
     }
 
     @GET
-    @Path("/{username}")
+    @Path("{username}")
     @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -104,7 +104,7 @@ public class AdministratorBean {
 
     @DELETE
     @RolesAllowed({"Administrator"})
-    @Path("{username}")
+    @Path("/{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void remove(@PathParam("username") String username) {
         try {

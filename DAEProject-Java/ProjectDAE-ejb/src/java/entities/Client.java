@@ -37,15 +37,15 @@ public class Client extends User implements Serializable {
     
     private String contactPerson;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<ProductConfiguration> productConfigurations;
 
     public Client() {
         this.productConfigurations = new LinkedList<>();
     }
 
-    public Client(String address, String companyName, String contactPerson, String username, String password) {
-        super(GROUP.Client,username, password);
+    public Client(String address, String companyName, String contactPerson, String username, String password, String email) {
+        super(GROUP.Client,username, password, email);
         this.address = address;
         this.companyName = companyName;
         this.contactPerson = contactPerson;

@@ -29,6 +29,17 @@
             <url-pattern>/api/admins/*</url-pattern>
             <url-pattern>/api/clients/*</url-pattern>
             <url-pattern>/api/productConfig/*</url-pattern>
+            <url-pattern>/api/software/*</url-pattern>
+            <url-pattern>/api/artifacts/*</url-pattern>
+            <url-pattern>/api/modules/*</url-pattern>
+            <url-pattern>/api/users/*</url-pattern>
+            <url-pattern>/api/templates/supportMaterials/*</url-pattern>
+            <url-pattern>/api/templates/create</url-pattern>
+            <url-pattern>/api/templates/update</url-pattern>
+            <url-pattern>/api/templates/delete/*</url-pattern>
+            <url-pattern>/api/templates/get/*</url-pattern>
+            <url-pattern>/api/templates/getFile/*</url-pattern>
+            <url-pattern>/api/templates/csv/*</url-pattern>
             <http-method>GET</http-method>
             <http-method>PUT</http-method>
             <http-method>POST</http-method>
@@ -44,8 +55,10 @@
         <web-resource-collection>
             <web-resource-name>Client</web-resource-name>
             <description/>
-            <url-pattern>/api/clients/*</url-pattern>
             <url-pattern>/api/productConfig/*</url-pattern>
+            <url-pattern>/api/users/*</url-pattern>
+            <url-pattern>/api/software/*</url-pattern>
+            <http-method>GET</http-method>
         </web-resource-collection>
         <auth-constraint>
             <description/>

@@ -31,18 +31,12 @@ public class ArtifactsBean {
      @PersistenceContext
     EntityManager em;
     
-     public void create(int id, String sourceCode, String database, String scripts, String libraries) throws EntityExistsException {
+     public void create(String sourceCode, String database, String scripts, String libraries) throws EntityExistsException {
         try {
-            Artifact a = em.find(Artifact.class, id);
-            if (a != null) {
-                throw new EntityExistsException("ERROR: Can't create new artifact because already exists a artifact with this id: " + id);
-            }
-
-            Artifact artifact = new Artifact(id, sourceCode, database, scripts, libraries);
+            Artifact artifact = new Artifact(sourceCode, database, scripts, libraries);
             em.persist(artifact);
 
-        } catch (EntityExistsException e) {
-            throw e;
+
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -51,16 +45,9 @@ public class ArtifactsBean {
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(ArtifactDTO artifactDTO) throws EntityExistsException {
-        try {
-            Artifact a = em.find(Artifact.class, artifactDTO.getId());
-            if (a != null) {
-                  throw new EntityExistsException("ERROR: Can't create new artifact because already exists a artifact with this id: " + artifactDTO.getId());
-            }
-
-            Artifact artifact = new Artifact(artifactDTO.getId(), artifactDTO.getSourceCode(), artifactDTO.getDatabase(), artifactDTO.getScripts(), artifactDTO.getLibrarys());
+        try {        
+            Artifact artifact = new Artifact(artifactDTO.getSourceCode(), artifactDTO.getDatabase(), artifactDTO.getScripts(), artifactDTO.getLibrarys());
             em.persist(artifact);
-        } catch (EntityExistsException e) {
-            throw e;
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -82,11 +69,11 @@ public class ArtifactsBean {
   
 
     public List<ArtifactDTO> artifactsToDTOs(List<Artifact> artifacts) {
-        List<ArtifactDTO> artifactsDTOs = new LinkedList<ArtifactDTO>();
+        List<ArtifactDTO> artifactsDTOs = new LinkedList<>();
 
-        for (Artifact a : artifacts) {
+        artifacts.forEach((a) -> {
             artifactsDTOs.add(artifactToDTO(a));
-        }
+         });
         return artifactsDTOs;
     }
 

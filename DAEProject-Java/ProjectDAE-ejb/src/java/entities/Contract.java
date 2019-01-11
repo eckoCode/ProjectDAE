@@ -25,8 +25,7 @@ import javax.persistence.Table;
 @NamedQuery(name = "getAllContract", query = "SELECT c FROM Contract c")
 public class Contract implements Serializable{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
     @Column(nullable = false)
